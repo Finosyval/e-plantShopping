@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
 import { addItem } from './CartSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 function ProductList({ onBack }) {
     const dispatch = useDispatch();
     const [showCart, setShowCart] = useState(false);
     const [addedToCart, setAddedToCart] = useState({});
+    const cartItems = useSelector(state => state.cart.items);
+    const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
     const handleAddToCart = (product) => {
         dispatch(addItem(product));
@@ -255,6 +257,7 @@ function ProductList({ onBack }) {
                                     strokeLinejoin="round" 
                                     strokeWidth="3"/>
                             </svg>
+                            {totalItems > 0 && <span className="cart-count">{totalItems}</span>}
                         </button>
                     </div>
                 </div>
